@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity
@@ -40,10 +41,14 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers(HttpMethod.GET, "/topicos").permitAll()
             .antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
+            .antMatchers(HttpMethod.POST, "/auth").permitAll()
             .and().authorizeRequests().antMatchers( "/h2-console", "/h2-console/**").permitAll()
             .anyRequest().authenticated()
-            .and().formLogin(); // formLogin() diz ao spring para gerar um formulario de autenticacao
-                                // e um Controller que recebe as requisicoes desse formulario
+            .and().sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // politica de criacao de sessao
+                                                                    // (nao desejo criar sessao)
+            //.and().formLogin(); // formLogin() diz ao spring para gerar um formulario de autenticacao
+                                // e um Controller que recebe as requisicoes desse formulario (sessao)
                                 // http://localhost:8080/login
         http.headers().frameOptions().disable();
     }
