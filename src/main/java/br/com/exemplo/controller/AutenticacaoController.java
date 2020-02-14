@@ -31,7 +31,7 @@ public class AutenticacaoController {
         UsernamePasswordAuthenticationToken dadosLogin = form.converter();
 
         try {
-            Authentication authentication = authManager.authenticate(dadosLogin);
+            Authentication authentication = authManager.authenticate(dadosLogin); // validacao de usuario e senha
             String token = tokenService.gerarToken(authentication);
             return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         } catch (AuthenticationException e) {
