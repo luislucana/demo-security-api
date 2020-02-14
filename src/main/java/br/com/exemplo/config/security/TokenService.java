@@ -18,6 +18,12 @@ public class TokenService {
     @Value("${forum.jwt.secret}")
     private String secret;
 
+    /**
+     * Recebe o usuario logado (Authentication)
+     *
+     * @param authentication
+     * @return token
+     */
     public String gerarToken(Authentication authentication) {
         Usuario logado = (Usuario) authentication.getPrincipal();
         Date hoje = new Date();

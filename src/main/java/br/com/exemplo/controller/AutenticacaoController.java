@@ -1,6 +1,7 @@
 package br.com.exemplo.controller;
 
 import br.com.exemplo.config.security.TokenService;
+import br.com.exemplo.controller.dto.TokenDto;
 import br.com.exemplo.controller.form.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,13 @@ public class AutenticacaoController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<?> autenticar(@RequestBody @Valid LoginForm form) {
+    public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form) {
         UsernamePasswordAuthenticationToken dadosLogin = form.converter();
 
         try {
             Authentication authentication = authManager.authenticate(dadosLogin);
             String token = tokenService.gerarToken(authentication);
-            System.out.println(token);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         } catch (AuthenticationException e) {
             return ResponseEntity.badRequest().build();
         }
